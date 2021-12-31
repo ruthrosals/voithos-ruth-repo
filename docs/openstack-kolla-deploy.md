@@ -12,8 +12,6 @@ Before executing `deploy`, confirm everything is ready:
 Use the following command to deploy OpenStack:
 
 ```bash
-# Note: --config-dir is optional and can be ommitted
-
 voithos openstack kolla-ansible deploy \
   --release train \
   --ssh-key ~/.ssh/id_rsa \
