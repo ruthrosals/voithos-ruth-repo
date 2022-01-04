@@ -14,26 +14,6 @@ from keystoneauth1 import session
 from keystoneauth1.identity import v3
 
 
-SUPPORTED_IMAGES = [
-    "centos7",
-    "centos8",
-    "cirros",
-    "rhel-6.10",
-    "rhel-7.8",
-    "rhel-8.2",
-    "ubuntu1804",
-    "ubuntu2004",
-    "ubuntu-desktop2004",
-    "windows10",
-    "windows2012",
-    "windows2016",
-    "windows2019",
-    "amphora-train",
-    "amphora-wallaby",
-    "capi-kube-v1.20.9",
-]
-
-
 def kolla_ansible_genpwd(release):
     """ Genereate passwords.yml and print to stdout """
     cwd = os.getcwd()
@@ -265,13 +245,28 @@ def sync_local_registry(release, keep, registry, image=None):
 
 def download_image(image, output_path=None):
     """ Download an OpenStack image from S3. Save to ./ unless output is not None """
-    if image not in SUPPORTED_IMAGES:
-        raise NotImplementedError(f"Image {image} is not implemented")
+    supported_image_list = s3.list_files("breqwatr-private-vm-images")
+    if image is None or image not in supported_image_list:
+        if image is None:
+            echo("USAGE: Either --image / -i is required.")
+        else:
+            echo(f"Image {image} is not implemented")
+        echo("The following images are supported:")
+        for supported_image in supported_image_list:
+            echo(f"  {supported_image}")
+        return
     filename = f"{image}.qcow2"
     path = f"./{filename}" if output_path is None else output_path
     bucket = "breqwatr-private-vm-images"
     echo(f"Downloading {path}, please wait. This may take a while...")
     s3.download(path, bucket, filename)
+
+
+def list_images():
+    """ List openstack images sitting on S3"""
+    image_list = s3.list_files("breqwatr-private-vm-images")
+    for image in image_list:
+        echo(image)
 
 
 def purge_gnocchi_resources():

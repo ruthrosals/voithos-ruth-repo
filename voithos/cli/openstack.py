@@ -231,13 +231,13 @@ def sync_local_registry(release, keep, registry, image):
 @click.command(name="download")
 def download_image(image, output):
     """ Download a Glance image from the internet """
-    if image is None or image not in openstack.SUPPORTED_IMAGES:
-        click.echo("USAGE: Either --image / -i is required.")
-        click.echo("The following images are supported:")
-        for supported_image in openstack.SUPPORTED_IMAGES:
-            click.echo(f"  {supported_image}")
-        return
     openstack.download_image(image, output_path=output)
+
+
+@click.command(name="list")
+def list_images():
+    """ List of available images """
+    openstack.list_images()
 
 
 @click.command(name="purge-gnocchi-resources")
@@ -254,6 +254,7 @@ def get_image_group():
         """ Manage Glance images"""
 
     image.add_command(download_image)
+    image.add_command(list_images)
     return image
 
 

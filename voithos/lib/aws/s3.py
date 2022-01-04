@@ -3,7 +3,6 @@ from tqdm import tqdm
 
 import voithos.lib.aws.aws as aws
 
-
 def callback(progress_bar):
     """ Progress callback for s3 operations """
 
@@ -23,6 +22,16 @@ def download(path, bucket_name, key, print_progress=True):
     filesize = file_object.content_length
     with tqdm(total=filesize, unit="B", unit_scale=True, desc=key) as progress_bar:
         s3client.download_file(bucket_name, key, path, Callback=callback(progress_bar))
+
+
+def list_files(bucket_name):
+    """ List files in S3 bucket"""
+    s3resource = aws.get_resource("s3")
+    images_bucket = s3resource.Bucket(bucket_name)
+    image_list = []
+    for image in images_bucket.objects.all():
+        image_list.append(image.key.rsplit('.', 1)[0])
+    return image_list
 
 
 def upload(path, bucket_name, key):
