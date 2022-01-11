@@ -14,7 +14,8 @@ def start(
     rabbit_pass,
     enable_ceph,
     kolla_ansible_dir,
-    cloud_name
+    cloud_name,
+    idrac_config=None
 ):
     """ Start the arcus api """
     rabbit_ips_csv = ",".join(rabbit_ips_list)
@@ -37,8 +38,9 @@ def start(
     if DEV_MODE:
         network = ""
     env_str = env_string(env_vars)
-    vols = volume_opt(kolla_ansible_dir, "/etc/kolla")
     name = "arcus_mgr"
     shell(f"docker rm -f {name} 2>/dev/null || true")
-    cmd = f"docker run -d --restart=always --name {name} {network} {env_str} {vols} {image}"
+    idrac_vol = volume_opt(idrac_config, "etc/arcusmgr/idrac/hosts_cfg.json") if idrac_config else ""
+    ka_vol = volume_opt(kolla_ansible_dir, "/etc/kolla")
+    cmd = f"docker run -d --restart=always --name {name} {network} {env_str} {ka_vol} {idrac_vol} {image}"
     shell(cmd)

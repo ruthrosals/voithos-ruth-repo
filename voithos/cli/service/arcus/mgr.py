@@ -34,6 +34,7 @@ def pull(release):
     "--kolla-ansible-dir", required=True, help="Full directory path containing kolla-ansible files"
 )
 @click.option("--cloud-name", required=True, help="Description of this cloud for alert emails")
+@click.option("--idrac-config", help="include a json config file of hosts for idrac temp and drive health checks")
 @click.command(name="start")
 def start(
     release,
@@ -45,6 +46,7 @@ def start(
     ceph,
     kolla_ansible_dir,
     cloud_name,
+    idrac_config,
 ):
     """ Launch the arcus-mgr service """
     click.echo("starting arcus manager")
@@ -59,6 +61,7 @@ def start(
         enable_ceph,
         kolla_ansible_dir,
         cloud_name,
+        idrac_config,
     )
 
 
