@@ -40,7 +40,7 @@ def start(
     env_str = env_string(env_vars)
     name = "arcus_mgr"
     shell(f"docker rm -f {name} 2>/dev/null || true")
-    idrac_vol = volume_opt(idrac_config, "etc/arcusmgr/idrac/hosts_cfg.json") if idrac_config else ""
+    idrac_vol = volume_opt(idrac_config, "/etc/arcusmgr/idrac/hosts_cfg.json") if idrac_config else ""
     ka_vol = volume_opt(kolla_ansible_dir, "/etc/kolla")
     cmd = f"docker run -d --restart=always --name {name} {network} {env_str} {ka_vol} {idrac_vol} {image}"
     shell(cmd)
