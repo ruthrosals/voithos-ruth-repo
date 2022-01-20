@@ -1,5 +1,6 @@
 """ lib for arcus services """
 
+import sys
 import click
 import datetime
 import inspect
@@ -97,10 +98,11 @@ def _verify_and_return_start_methods_args(release, arcus_service_type, env_varia
     for key in args_dict:
         args.remove(key)
     if len(args) > 0:
-        msg = "ERROR: New args {} aren't supported in running arcus_{} container. Please create new arcus_{} container.".format(
+        msg = "ERROR: New args {} aren't supported in running arcus_{} container. Please create new container.".format(
             args, arcus_service_type
         )
-        error(msg, exit=True)
+        print(msg, file=sys.stderr)
+        sys.exit(1)
     return args_dict
 
 
