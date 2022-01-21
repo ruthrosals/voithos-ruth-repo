@@ -442,7 +442,7 @@ class LinuxWorker:
         fdisk = run(f"fdisk -l {drive}")
         disk_type_line = next((line for line in fdisk if "Disklabel type" in line), None)
         if disk_type_line is None:
-            error(f"Error: Failed to determine boot mode of {self.boot_volume}", exit=True)
+            error(f"Error: Failed to determine boot mode of {self.boot_volume}", exit=False)
         disk_type = disk_type_line.split(" ")[-1]
         _boot_mode = "UEFI" if (disk_type == "gpt") else "BIOS"
         self._boot_mode = _boot_mode
