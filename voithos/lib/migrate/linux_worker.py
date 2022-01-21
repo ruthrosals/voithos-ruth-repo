@@ -464,6 +464,7 @@ class LinuxWorker:
                 run(repair_cmd)
             else:
                 print(f" ! Cannot repair {partition} - unsupported filesystem: {filesystem}")
+                continue
 
     def uninstall(self, package, like=False):
         """ Child classes must extend this method, it varies from distro to distro """
