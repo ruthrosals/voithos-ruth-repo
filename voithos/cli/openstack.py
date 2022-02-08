@@ -9,6 +9,14 @@ from voithos.lib.system import error
 
 
 @click.option("--release", "-r", help="OpenStack release name", required=True)
+@click.command(name="get-overrides")
+def get_overrides(release):
+    """ Generate Breqwatr's recommended Kolla-Ansible overrides directory """
+    openstack.kolla_ansible_genoverrides(release)
+    click.echo("Created overrides directory")
+
+
+@click.option("--release", "-r", help="OpenStack release name", required=True)
 @click.command(name="get-passwords")
 def get_passwords(release):
     """ Generate Kolla-Ansible's ./passwords.yml file """
@@ -265,6 +273,7 @@ def get_openstack_group():
     def openstack_group():
         """ Deploy and manage OpenStack """
 
+    openstack_group.add_command(get_overrides)
     openstack_group.add_command(get_passwords)
     openstack_group.add_command(get_inventory_template)
     openstack_group.add_command(get_certificates)

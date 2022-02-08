@@ -1,7 +1,8 @@
 """ OpenStack lib """
 import os
-
+import pathlib
 from click import echo
+from distutils.dir_util import copy_tree
 
 import voithos.lib.aws.s3 as s3
 import voithos.lib.aws.ecr as ecr
@@ -13,6 +14,15 @@ from gnocchiclient.v1 import client as gnocchi
 from keystoneauth1 import session
 from keystoneauth1.identity import v3
 
+
+def kolla_ansible_genoverrides(release):
+    """ Generate overrides directory"""
+    cwd = os.getcwd()
+    current_file_parent_dir = pathlib.Path(__file__).parent.absolute()
+    overrides_dir_path = f"{current_file_parent_dir}/files/overrides/{release}"
+    if not os.path.exists(overrides_dir_path):
+        error(f"ERROR: Can't find overrides for {release} release", exit=True)
+    copy_tree(overrides_dir_path, cwd)
 
 def kolla_ansible_genpwd(release):
     """ Genereate passwords.yml and print to stdout """

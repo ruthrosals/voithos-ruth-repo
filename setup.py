@@ -1,5 +1,22 @@
 """Set up Voithos """
+import os
+import pathlib
 from setuptools import setup, find_packages
+
+def data_files():
+  """  package_data doesn't look for files recursively.
+  This method returns list of all the data paths.
+  """
+  paths = []
+  current_file_parent_dir = pathlib.Path(__file__).parent.absolute()
+  files_dir = f"{current_file_parent_dir}/voithos/lib/files/"
+  for (path, directories, filenames) in os.walk(files_dir):
+      # Removes the path's substring before lib/files. Absolute path won't work in package_data.
+      path = path[path.find('lib/files/'):]
+      for filename in filenames:
+          paths.append(os.path.join(path, filename))
+  return paths
+data_paths = data_files()
 
 with open("README.md", "r") as readme_file:
     long_description = readme_file.read()
@@ -44,6 +61,6 @@ setup(
         "Programming Language :: Python :: 3",
         "Natural Language :: English",
     ],
-    package_data={"voithos": ["lib/files/grafana/*.json", "lib/files/horizon/*"]},
+    package_data={'voithos': data_paths },
     include_package_data=True,
 )
