@@ -1,6 +1,6 @@
 # Installing Arcus
 
-Arcus is ran as a few Docker containers. Deploy Voithos to install Arcus.
+Arcus is deployed as a docker containers. Deploy Voithos to install Arcus.
 
 
 ---
