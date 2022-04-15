@@ -128,10 +128,29 @@ enable_fluentd: yes
 ## Ceph
 
 While possible, we never use Kolla-Ansible to install Ceph. Instead we prefer Ceph-Ansible.
+Set external_ceph_cephx_enabled to "yes" if ceph is deployed separately.
 
 ```yaml
 enable_ceph: no
+external_ceph_cephx_enabled:
+
+# Update the pool names below if pools are created with some other names.
+ceph_nova_user: "nova"
+ceph_nova_pool_name: "volumes"
+ceph_nova_keyring: "ceph.client.nova.keyring"
+ceph_cinder_user: "cinder"
+ceph_cinder_pool_name: "volumes"
+ceph_cinder_keyring: "ceph.client.cinder.keyring"
+ceph_nova_user: "glance"
+ceph_nova_pool_name: "images"
+ceph_nova_keyring: "ceph.client.glance.keyring"
+# If gnocchi is enabled
+ceph_gnocchi_user: "gnocchi"
+ceph_gnocchi_pool_name: "gnocchi"
+ceph_gnocchi_keyring: "ceph.client.gnocchi.keyring"
 ```
+
+
 
 ## Keystone
 
@@ -249,8 +268,6 @@ Gnocchi depends on ceilometer for polling metrics. Enable both gnocchi and ceilo
 enable_ceilometer: yes
 enable_gnocchi: yes
 gnocchi_backend_storage: "ceph" or "file"
-# Use following attribute if gnocchi_backend_storage is ceph pool name is other than "gnocchi"
-ceph_gnocchi_pool_name:
 ```
 
 ## Central Logging
