@@ -62,9 +62,9 @@ class VMWareMgr:
                 )
             except SSLVerificationError:
                 try:
-                    ctx = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+                    ctx = ssl.SSLContext(ssl.PROTOCOL_TLS)
                     ctx.verify_mode = ssl.CERT_NONE
-                    debug("Connecting with SmartConnec - TLSv1 and verify off")
+                    debug("Connecting with SmartConnec - TLS and verify off")
                     self.conn = connect.SmartConnect(
                         host=self.ip_addr, user=self.username, pwd=self.password, sslContext=ctx
                     )
