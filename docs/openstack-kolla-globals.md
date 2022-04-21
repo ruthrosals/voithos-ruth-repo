@@ -135,6 +135,7 @@ enable_ceph: no
 external_ceph_cephx_enabled:
 
 # Update the pool names below if pools are created with some other names.
+# ceph_nova_user feild required after Victoria release
 ceph_nova_user: "nova"
 ceph_nova_pool_name: "volumes"
 ceph_nova_keyring: "ceph.client.nova.keyring"
