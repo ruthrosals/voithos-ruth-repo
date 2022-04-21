@@ -123,6 +123,7 @@ def integrations_delete(api_addr, username, password, intg_id):
 @click.option("--username", "-u", required=True, help="OpenStack administrator username")
 @click.option("--password", "-p", required=True, help="OpenStack administrator password")
 @click.option("--type", "-t", "intg_type", required=True, help="Integration type to be created")
+@click.option("--links-csv", "links_csv", default=None, help="Integrations links csv")
 @click.option(
     "--field",
     "-f",
@@ -132,12 +133,12 @@ def integrations_delete(api_addr, username, password, intg_id):
     help="Format: --field <key1> '<value1>' --field <key2> '<value2>'",
 )
 @click.command(name="create")
-def integrations_create(api_addr, username, password, intg_type, fields):
+def integrations_create(api_addr, username, password, intg_type, fields, links_csv):
     """ Create a new integration """
     _validate_addr(api_addr)
     _validate_type(api_addr, intg_type)
     _validate_fields(api_addr, intg_type, fields)
-    success = intgs.create_integration(api_addr, username, password, intg_type, fields)
+    success = intgs.create_integration(api_addr, username, password, intg_type, fields, links_csv)
     if success:
         click.echo("Successfully created Integration")
     else:

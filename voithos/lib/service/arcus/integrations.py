@@ -6,9 +6,11 @@ import voithos.lib.service.arcus.api as api
 from voithos.lib.system import error
 
 
-def _get_intg_dict(intg_type, fields):
+def _get_intg_dict(intg_type, fields, links_csv):
     """ Return a dictionary-format integration. Fields is a multi-arg from Click with 2 elems """
     data = {"type": intg_type, "fields": {}}
+    if links_csv is not None:
+        data["links"] = links_csv
     for field in fields:
         data["fields"][field[0]] = field[1]
     return data
@@ -37,10 +39,10 @@ def list_integrations(api_addr, username, password):
     return resp.json()["integrations"]
 
 
-def create_integration(api_addr, username, password, intg_type, fields):
+def create_integration(api_addr, username, password, intg_type, fields, links_csv):
     """ Create an integration """
     headers = api.get_http_auth_headers(username, password, api_addr)
-    data = _get_intg_dict(intg_type, fields)
+    data = _get_intg_dict(intg_type, fields, links_csv)
     resp = requests.post(f"{api_addr}/integrations", headers=headers, json=data, verify=False)
     return resp.status_code == 201
 
