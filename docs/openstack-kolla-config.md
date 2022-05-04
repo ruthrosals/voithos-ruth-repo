@@ -146,6 +146,18 @@ cpu_allocation_ratio = 5
 ram_allocation_ratio = 1
 ```
 
+### Resize Confirm Window
+
+This change will ensure to do resize confirm if a Virtual Machine is in verify resize state for 1 minute
+
+```
+# config/nova/nova-compute.conf
+
+[DEFAULT]
+resize_confirm_window = 60
+```
+
+
 ## config/nova/nova-api.conf
 
 ### Disable Ephemral Disk Usage
